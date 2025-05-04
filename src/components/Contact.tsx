@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, AlertCircle } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -20,19 +20,35 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const response = await fetch('https://kadenbrooke.app.n8n.cloud/webhook/25ce4588-c64a-4436-a917-0c869d92ca4c', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        // Get more detailed error message if available
+        const errorData = await response.text();
+        throw new Error(errorData || `Server responded with status: ${response.status}`);
+      }
+
       setIsSubmitted(true);
       setFormData({
         name: '',
@@ -41,7 +57,14 @@ const Contact = () => {
         company: '',
         message: '',
       });
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setError(
+        'Unable to submit your message at this time. Please try again later or contact us directly via email or phone.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -86,7 +109,7 @@ const Contact = () => {
                 <div className="ml-4">
                   <p className="text-gray-600 font-medium">Location</p>
                   <p className="text-lg text-gray-900">
-                    Salt Lake City, Utah
+                    Springville, Utah
                   </p>
                 </div>
               </div>
@@ -106,6 +129,13 @@ const Contact = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
+                {error && (
+                  <div className="mb-6 p-4 bg-red-50 rounded-lg flex items-start">
+                    <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+                    <p className="ml-3 text-sm text-red-600">{error}</p>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
