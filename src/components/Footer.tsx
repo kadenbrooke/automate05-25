@@ -1,4 +1,4 @@
-import { Bot } from 'lucide-react';
+import { Bot, Instagram, Youtube, Facebook, Twitter, LinkedinIcon } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -44,6 +44,54 @@ const Footer = () => {
               kaden@auto-mate.business
             </a>
           </div>
+        </div>
+
+        <div className="flex justify-center space-x-6 mt-8">
+          <a
+            href="https://www.instagram.com/auto_mateai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors"
+            aria-label="Instagram"
+          >
+            <Instagram className="h-6 w-6" />
+          </a>
+          <a
+            href="https://www.youtube.com/@Auto-MateAI"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors"
+            aria-label="YouTube"
+          >
+            <Youtube className="h-6 w-6" />
+          </a>
+          <a
+            href="https://www.facebook.com/profile.php?id=61573380556205"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors"
+            aria-label="Facebook"
+          >
+            <Facebook className="h-6 w-6" />
+          </a>
+          <a
+            href="https://x.com/Auto_MateAI"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors"
+            aria-label="X (Twitter)"
+          >
+            <Twitter className="h-6 w-6" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/kaden-brooke-101bba353/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors"
+            aria-label="LinkedIn"
+          >
+            <LinkedinIcon className="h-6 w-6" />
+          </a>
         </div>
       </div>
     </footer>
